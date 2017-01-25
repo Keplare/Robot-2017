@@ -3,7 +3,7 @@ package org.usfirst.frc.team20.robot;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
-
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
@@ -12,6 +12,19 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 
 public class DriveTrain implements PIDOutput{
+	//everything but pulsePerRevolution must change, talk to electrical team
+	public static final double wheelDiameter = 3.5;
+    	public static final double pulsePerRevolution = 360;
+    	public static final double encoderGearRatio = 3;
+    	public static final double gearRatio = 64.0/20.0; 
+    	public static final double Fudgefactor = 1.0; //You don't really need this
+    	public static final double distanceperpulse = Math.PI*wheelDiameter/pulsePerRevolution/
+    		encoderGearRatio/gearRatio * Fudgefactor;
+	//TODO find the actual encoder parameters for channel a and channel b
+    	//This is found on the DIO
+	Encoder l_encoder = new Encoder(1,2,false,Encoder.EncodingType.k4X); 
+	Encoder r_encoder = new Encoder(3,4,false,Encoder.EncodingType.k4X);
+	
 	DriverStation d = DriverStation.getInstance();
 	DoubleSolenoid shifter = new DoubleSolenoid(1, 2);
 	Constants constants;
